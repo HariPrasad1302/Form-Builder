@@ -41,11 +41,12 @@ function CreateFormBtn() {
     
     async function onSubmit(values: formSchemaType){
         try {
-            await CreateForm(values);
+            const formId = await CreateForm(values);
             toast({
                 title:"Success",
                 description: "Form created successfully"
             });
+            console.log("FORM ID",formId);
         } catch (error) {
             toast({
                 title: "Error",
@@ -87,7 +88,7 @@ function CreateFormBtn() {
                     />
                     <FormField 
                         control={form.control}
-                        name="name"
+                        name="description"
                         render={({field}) =>(
                             <FormItem>
                                 <FormLabel>Description</FormLabel>
