@@ -9,6 +9,21 @@ import Logo from '@/components/Logo'
 import ThemeSwitcher from '@/components/ThemeSwitcher'
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs'
 import { currentUser } from "@clerk/nextjs/server";
+import { GetForms, GetFormStats } from "@/actions/form";
+import { GetServerSideProps } from "next";
+
+
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const stats = await GetFormStats();
+  const forms = await GetForms();
+  return {
+    props: {
+      stats,
+      forms,
+    },
+  };
+};
 
 export  default async function Home() {
   const user = await currentUser()

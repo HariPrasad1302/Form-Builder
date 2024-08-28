@@ -15,19 +15,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { BiRightArrowAlt } from "react-icons/bi";
 import { FaEdit } from "react-icons/fa";
-import { GetServerSideProps } from "next";
 
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const stats = await GetFormStats();
-  const forms = await GetForms();
-  return {
-    props: {
-      stats,
-      forms,
-    },
-  };
-};
 
 export default function Home() {
   return (
