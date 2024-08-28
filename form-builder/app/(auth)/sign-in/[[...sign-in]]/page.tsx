@@ -16,7 +16,8 @@ export default function SignInPage() {
         {/* <div className="w-80 h-80 bg-purple-800 opacity-30 blur-2xl rounded-full "></div> */}
       </div>
 
-      <SignIn.Root className="relative z-20 w-full max-w-md">
+      <div className="relative z-20 w-full max-w-md">
+      <SignIn.Root >
         <SignIn.Step
           name="start"
           className="bg-gray-900 bg-opacity-80 w-full rounded-2xl py-10 px-8 shadow-xl border border-gray-700 space-y-6"
@@ -62,6 +63,9 @@ export default function SignInPage() {
           </div>
         </SignIn.Step>
       </SignIn.Root>
+      </div>
+
+      
     </div>
   )
 }
