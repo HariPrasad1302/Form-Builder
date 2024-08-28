@@ -95,7 +95,7 @@ function StatsCards(props: StatsCardProps) {
   );
 }
 
-function StatsCard(
+export function StatsCard(
   {
     title,
     value,
@@ -105,7 +105,7 @@ function StatsCard(
     className
   }:{
     title: string;
-    value: number;
+    value: string;
     helperText: string;
     className: string;
     loading: boolean;
@@ -183,7 +183,7 @@ function FormCard({form}:{form: Form}){
       <CardFooter className="">
         {form.published && (
           <Button asChild className="w-full mt-2 text-md gap-4">
-            <Link href={`/forms/${form.id}`}>
+            <Link href={`/dashboard/forms/${form.id}`}>
             View Submissions 
             <BiRightArrowAlt />
             </Link>
@@ -191,7 +191,7 @@ function FormCard({form}:{form: Form}){
         )}
         {!form.published && (
           <Button variant={"secondary"} asChild className="w-full mt-2 text-md gap-4">
-            <Link href={`/builder/${form.id}`}>
+            <Link href={`/dashboard/builder/${form.id}`}>
             Edit form 
             <FaEdit />
             </Link>

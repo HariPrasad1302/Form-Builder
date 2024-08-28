@@ -18,7 +18,7 @@ import Confetti from 'react-confetti'
 
 function FormBuilder({form}:{form: Form }) {
 
-    const {setElements} = useDesigner();
+    const {setElements, setSelectedElement} = useDesigner();
 
     const [isReady, setIsReady] = useState(false);
     
@@ -39,9 +39,10 @@ function FormBuilder({form}:{form: Form }) {
     useEffect(() => {
         const elements = JSON.parse(form.content);
         setElements(elements);
+        setSelectedElement(null);
         const readyTimeout = setTimeout(()=> setIsReady(true), 500);
         return () => clearTimeout(readyTimeout);
-    }, [form, setElements]);
+    }, [form, setElements, isReady, setSelectedElement]);
 
     if(!isReady){
         return(
@@ -81,13 +82,13 @@ function FormBuilder({form}:{form: Form }) {
                 </div>
                 <div className='flex justify-between'>
                     <Button variant={"link"} asChild>
-                        <Link href={"/"} className='gap-2'>
+                        <Link href={"/dashboard"} className='gap-2'>
                             <BsArrowLeft />
-                            Go back home
+                            Back to Dashboard
                         </Link>
                     </Button>
                     <Button variant={"link"} asChild>
-                        <Link href={`/forms/${form.id}`} className='gap-2'>
+                        <Link href={`/dashboard/forms/${form.id}`} className='gap-2'>
                             Form details
                             <BsArrowRight/>
                         </Link>

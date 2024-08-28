@@ -7,15 +7,14 @@ function Layout({children}:{children: ReactNode}) {
   return (
     <div className='flex flex-col min-h-screen min-w-full
     bg-background max-h-screen'>
-        <nav className='flex justify-between items-center border-b border-border
+        <nav className='flex justify-between items-center 
         h-[60px] px-4 py-2'>
             <Logo />
-            <div className='flex gap-4 items-center'>
+            {/* <div className='flex gap-4 items-center'>
                 <ThemeSwitcher />
-                <UserButton afterSignOutUrl='/sign-in' />
-            </div>
+            </div> */}
         </nav>
-        <main className='flex w-full flex-grow'>{children}</main>
+        <main className='flex w-full h-full flex-grow justify-center items-center'>{children}</main>
     </div>
   )
 }

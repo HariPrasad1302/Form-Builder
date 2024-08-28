@@ -21,16 +21,20 @@ import {
 } from "../ui/form";
 import { Switch } from "../ui/switch";
 import { cn } from "@/lib/utils";
+import { BsTextareaResize } from "react-icons/bs";
+import { Textarea } from "../ui/textarea";
+import { Slider } from "../ui/slider";
 
-const type: ElementsType = "TextField";
+const type: ElementsType = "TextAreaField";
 
 
 
 const extraAttributes = {
-    label: "Text field",
+    label: "Text area",
     helperText: "Helper text",
     required: false,
     placeHolder: "Value here...",
+    rows: 3,
 }
 
 const propertiesSchema = z.object({
@@ -38,9 +42,10 @@ const propertiesSchema = z.object({
     helperText: z.string().max(200),
     required: z.boolean().default(false),
     placeHolder: z.string().max(50),
+    rows: z.number().min(1).max(10),
 });
 
-export const TextFieldFormElement: FormElement ={
+export const TextAreaFieldFormElement: FormElement ={
     type,
     construct: (id: string) =>({
         id,
@@ -48,8 +53,8 @@ export const TextFieldFormElement: FormElement ={
         extraAttributes,
     }),
     designerBtnElement:{
-        icon: MdTextFields,
-        label: "Text Field"
+        icon: BsTextareaResize,
+        label: "TextArea Field"
     },
     designerComponent:  DesignerComponent,
     formComponent: FormComponent,
@@ -75,14 +80,14 @@ function DesignerComponent({elementInstance}:{
     elementInstance: FormElementInstance;
 }){
     const element= elementInstance as CustomInstance;
-    const {label, required, placeHolder, helperText} = element.extraAttributes;
+    const {label, required, placeHolder, helperText, rows} = element.extraAttributes;
     return(
         <div className="flex flex-col gap-2 w-full">
             <Label>
                 {label}
                 {required && "*"}
             </Label>
-            <Input placeholder={placeHolder} className=""/>
+            <Textarea placeholder={placeHolder} className=""/>
             {helperText && (
                 <p className="text-muted-foreground text-[0.8rem]">
                     {helperText}
@@ -109,6 +114,7 @@ function PropertiesComponent({elementInstance}:{
             helperText: element.extraAttributes.helperText,
             required: element.extraAttributes.required,
             placeHolder: element.extraAttributes.placeHolder,
+            rows: element.extraAttributes.rows
         },
     });
 
@@ -117,7 +123,7 @@ function PropertiesComponent({elementInstance}:{
     },[element, form]);
 
     function applyChanges(values: propertiesFormSchemaType){
-        const {label, helperText, required, placeHolder} = values;
+        const {label, helperText, required, placeHolder, rows} = values;
         updateElement(element.id, {
             ...element,
             extraAttributes:{
@@ -125,6 +131,7 @@ function PropertiesComponent({elementInstance}:{
                 helperText,
                 placeHolder,
                 required,
+                rows
             }
         })
         console.log("Updated element:", element); // Log the updated element
@@ -198,6 +205,19 @@ function PropertiesComponent({elementInstance}:{
                         </FormItem>
                     )}
                 />
+                <FormField 
+                    control={form.control}
+                    name="rows"
+                    render={({field}) =>(
+                        <FormItem>
+                            <FormLabel>Rows {form.watch("rows")}</FormLabel>
+                            <FormControl>
+                                <Slider defaultValue={[field.value]} min={1} max={10} step={1} onValueChange={(value) => {field.onChange(value[0])}}/>
+                            </FormControl>
+                            <FormMessage/>
+                        </FormItem>
+                    )}
+                />
 
                 <FormField 
                     control={form.control}
@@ -244,20 +264,21 @@ function FormComponent({elementInstance, submitValue, isInvalid, defaultValue}:{
         setError(isInvalid === true);
     }, [isInvalid]);
 
-    const {label, required, placeHolder, helperText} = element.extraAttributes;
+    const {label, required, placeHolder, helperText, rows} = element.extraAttributes;
     return(
         <div className="flex flex-col gap-2 w-full">
             <Label className={cn(error && "text-red-500")}>
                 {label}
                 {required && "*"}
             </Label>
-            <Input  
+            <Textarea
+                rows={rows}  
                 placeholder={placeHolder} 
                 className={cn(error && "border-red-500")}
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={(e) => {
                     if(!submitValue) return;
-                    const valid = TextFieldFormElement.validate(element, e.target.value);
+                    const valid = TextAreaFieldFormElement.validate(element, e.target.value);
                     setError(!valid);
                     if(!valid) return;
                     submitValue(element.id, e.target.value)
